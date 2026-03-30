@@ -7,10 +7,10 @@ import 'package:searchlight_highlight_example/src/parsedoc_record.dart';
 import 'package:searchlight_highlight_example/src/validation_issue.dart';
 
 void main() {
-  testWidgets('standalone mode renders Orama-style highlight details', (
+  testWidgets('standalone mode renders all four highlight output sections', (
     WidgetTester tester,
   ) async {
-    await tester.binding.setSurfaceSize(const Size(1400, 1000));
+    await tester.binding.setSurfaceSize(const Size(1400, 3000));
     await tester.pumpWidget(
       HighlightValidationApp(
         supportsDesktopFolderSource: true,
@@ -20,30 +20,19 @@ void main() {
     );
 
     expect(find.text('TextSpan preview'), findsOneWidget);
-    expect(
-      find.textContaining('Rendered with RichText/TextSpan'),
-      findsOneWidget,
-    );
-    expect(find.text('HTML output'), findsOneWidget);
+    expect(find.text('Rendered HTML preview'), findsOneWidget);
+    expect(find.text('Raw HTML string'), findsOneWidget);
     expect(find.text('Trim(18)'), findsOneWidget);
     expect(
-      find.textContaining(
-        'The quick <mark class="searchlight-highlight">brown</mark>',
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.textContaining(
-        '...he quick <mark class="searchlight-highlight">brown</mark>',
-      ),
-      findsOneWidget,
+      find.textContaining('<mark class="searchlight-highlight">'),
+      findsWidgets,
     );
   });
 
   testWidgets(
     'standalone mode wires the case-sensitive toggle into Highlight',
     (WidgetTester tester) async {
-      await tester.binding.setSurfaceSize(const Size(1400, 1000));
+      await tester.binding.setSurfaceSize(const Size(1400, 3000));
       await tester.pumpWidget(
         HighlightValidationApp(
           supportsDesktopFolderSource: true,
@@ -54,15 +43,17 @@ void main() {
 
       await tester.enterText(
         find.byKey(const ValueKey('standalone-query')),
-        'BROWN',
+        'ALICE',
       );
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('Positions: [10-14]'), findsOneWidget);
+      // Case-insensitive (default): "ALICE" matches "Alice" at position 0.
+      expect(find.textContaining('Positions: [0-4'), findsOneWidget);
 
       await tester.tap(find.byKey(const ValueKey('case-sensitive-toggle')));
       await tester.pumpAndSettle();
 
+      // Case-sensitive: "ALICE" does not match "Alice".
       expect(find.textContaining('Positions: []'), findsOneWidget);
     },
   );

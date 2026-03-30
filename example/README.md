@@ -24,7 +24,7 @@ This example depends on three packages with separate responsibilities:
 - `searchlight_parsedoc`
   parses Markdown and HTML into Searchlight-ready records
 
-This split mirrors Orama's package boundaries:
+This split mirrors the upstream package boundaries:
 
 - standalone highlighting is not a create-time plugin
 - parsing lives outside core search
@@ -41,14 +41,20 @@ flutter run -d macos
 
 ## Verify Standalone Highlight
 
-In `Standalone highlight` mode:
+In `Standalone highlight` mode the default sample is an excerpt from
+*Alice's Adventures in Wonderland* with the query `Alice Rabbit`.
 
-- confirm the default sample text highlights `brown` and `fox`
-- confirm the position output is `[10-14, 16-18]`
-- confirm the HTML output contains `<mark class="searchlight-highlight">`
-- confirm the `TextSpan preview` card is the Flutter `RichText` / `TextSpan`
-  rendering path driven by `Position` ranges
-- confirm the HTML output is shown as literal markup inside a code-style block
+Confirm the four output cards:
+
+- **TextSpan preview** — Flutter `RichText` / `TextSpan` rendering from
+  inclusive `Position` ranges, with the positions listed below the preview
+- **Rendered HTML preview** — the highlight HTML rendered by `flutter_html`
+- **Raw HTML string** — the literal HTML markup (should contain
+  `<mark class="searchlight-highlight">`) shown in a code-style block
+- **Trim(18)** — the trimmed highlight output from `highlight.trim(18)`
+
+Also:
+
 - switch between the three strategy modes and verify the preview changes
 - toggle case sensitivity and verify matching changes
 

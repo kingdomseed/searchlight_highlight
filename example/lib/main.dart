@@ -79,8 +79,31 @@ class HighlightValidationScreen extends StatefulWidget {
 
 class _HighlightValidationScreenState extends State<HighlightValidationScreen> {
   static const _standaloneSeedText =
-      'The quick brown fox jumps over the lazy dog';
-  static const _standaloneSeedQuery = 'brown fox';
+      'Alice was beginning to get very tired of sitting by her sister on '
+      'the bank, and of having nothing to do: once or twice she had '
+      'peeped into the book her sister was reading, but it had no '
+      'pictures or conversations in it, "and what is the use of a book," '
+      'thought Alice "without pictures or conversations?"\n\n'
+      'So she was considering in her own mind (as well as she could, for '
+      'the hot day made her feel very sleepy and stupid), whether the '
+      'pleasure of making a daisy-chain would be worth the trouble of '
+      'getting up and picking the daisies, when suddenly a White Rabbit '
+      'with pink eyes ran close by her.\n\n'
+      'There was nothing so very remarkable in that; nor did Alice think '
+      'it so very much out of the way to hear the Rabbit say to itself, '
+      '"Oh dear! Oh dear! I shall be late!" (when she thought it over '
+      'afterwards, it occurred to her that she ought to have wondered at '
+      'this, but at the time it all seemed quite natural); but when the '
+      'Rabbit actually took a watch out of its waistcoat-pocket, and '
+      'looked at it, and then hurried on, Alice started to her feet, for '
+      'it flashed across her mind that she had never before seen a rabbit '
+      'with either a waistcoat-pocket, or a watch to take out of it, and '
+      'burning with curiosity, she ran across the field after it, and '
+      'fortunately was just in time to see it pop down a large '
+      'rabbit-hole under the hedge.\n\n'
+      'In another moment down went Alice after it, never once considering '
+      'how in the world she was to get out again.';
+  static const _standaloneSeedQuery = 'Alice Rabbit';
   static const _exampleHighlightCssClass = 'searchlight-highlight';
 
   final TextEditingController _standaloneTextController = TextEditingController(
@@ -331,6 +354,10 @@ class _HighlightValidationScreenState extends State<HighlightValidationScreen> {
       ],
     );
 
+    final positions = highlighted.positions;
+    final htmlOutput = highlighted.HTML;
+    final trimOutput = highlighted.trim(18);
+
     final details = ListView(
       children: [
         _InfoCard(
@@ -343,33 +370,36 @@ class _HighlightValidationScreenState extends State<HighlightValidationScreen> {
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 8),
-              _HighlightedTextPreview(
-                text: text,
-                positions: highlighted.positions,
-              ),
+              _HighlightedTextPreview(text: text, positions: positions),
+              const SizedBox(height: 8),
+              Text('Positions: ${_formatPositions(positions)}'),
             ],
           ),
         ),
         const SizedBox(height: 16),
         _InfoCard(
-          title: 'Match details',
+          title: 'Rendered HTML preview',
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Positions: ${_formatPositions(highlighted.positions)}'),
-              const SizedBox(height: 8),
               Text(
-                'HTML output',
-                style: Theme.of(context).textTheme.labelLarge,
+                'Rendered with flutter_html from the highlight HTML output.',
+                style: Theme.of(context).textTheme.bodySmall,
               ),
-              const SizedBox(height: 4),
-              _CodeBlock(text: highlighted.HTML),
-              const SizedBox(height: 12),
-              Text('Trim(18)', style: Theme.of(context).textTheme.labelLarge),
-              const SizedBox(height: 4),
-              _CodeBlock(text: highlighted.trim(18)),
+              const SizedBox(height: 8),
+              Html(data: htmlOutput),
             ],
           ),
+        ),
+        const SizedBox(height: 16),
+        _InfoCard(
+          title: 'Raw HTML string',
+          child: _CodeBlock(text: htmlOutput),
+        ),
+        const SizedBox(height: 16),
+        _InfoCard(
+          title: 'Trim(18)',
+          child: _CodeBlock(text: trimOutput),
         ),
       ],
     );
