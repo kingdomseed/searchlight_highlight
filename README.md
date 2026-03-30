@@ -84,7 +84,7 @@ Output:
 ```text
 [Position(start: 10, end: 14), Position(start: 16, end: 18)]
 The quick <mark class="orama-highlight">brown</mark> <mark class="orama-highlight">fox</mark> jumps over the lazy dog
-...uick <mark class="orama-highlight">brown</mark>...
+...he quick <mark class="orama-highlight">brown</mark> <mark class="orama-highlight">fox</mark>...
 ```
 
 ## Configuration
