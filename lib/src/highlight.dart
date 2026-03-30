@@ -132,8 +132,6 @@ final class Highlight {
 
   String get HTML => _html;
 
-  HighlightOptions get options => _options;
-
   RegExp _buildRegex(String searchTerms) {
     final strategy = _options.strategy;
     if (strategy == highlightStrategy.WHOLE_WORD_MATCH) {
