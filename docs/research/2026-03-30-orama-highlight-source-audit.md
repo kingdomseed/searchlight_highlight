@@ -55,6 +55,12 @@ Audited defaults:
 - `HTMLTag: 'mark'`
 - `CSSClass: 'orama-highlight'`
 
+README drift note:
+
+- the audited Orama README still shows a `wholeWords: true` example
+- the audited source and tests use `strategy`, not `wholeWords`
+- Searchlight Highlight should follow the audited source contract first
+
 ### `Position`
 
 Audited shape:
