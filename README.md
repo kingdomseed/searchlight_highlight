@@ -73,6 +73,7 @@ void main() {
 
   print(highlighted.positions);
   print(highlighted.HTML);
+  // trim() re-highlights the trimmed excerpt on the same stateful instance.
   print(highlighted.trim(18));
 }
 ```
@@ -95,6 +96,7 @@ final highlighter = Highlight(
     caseSensitive: false,
     strategy: 'partialMatch',
     HTMLTag: 'mark',
+    // This is the package default.
     CSSClass: 'orama-highlight',
   ),
 );
@@ -249,6 +251,14 @@ The Flutter app proves two paths:
 - standalone `searchlight_highlight` usage
 - `searchlight_parsedoc` + `searchlight` + `searchlight_highlight` working
   together over live `.md` and `.html` folders
+
+Current example-app constraints:
+
+- the parsedoc integration uses `searchlight_parsedoc` from GitHub `main`
+  rather than a pinned pub release
+- the live folder-ingestion flow is desktop-only in the current app
+- the example app overrides the HTML class to `searchlight-highlight`; the
+  package default remains `orama-highlight`
 
 Run it with:
 
