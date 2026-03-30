@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:searchlight_highlight/searchlight_highlight.dart';
 
 void main() {

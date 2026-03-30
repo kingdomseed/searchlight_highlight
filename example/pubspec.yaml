@@ -1,0 +1,30 @@
+name: searchlight_highlight_example
+description: "Flutter validation app for searchlight_highlight."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  file_selector: ^1.0.3
+  flutter_markdown_plus: ^1.0.3
+  path: ^1.9.1
+  searchlight: ^0.1.0
+  searchlight_highlight:
+    path: ..
+  searchlight_parsedoc:
+    git:
+      url: https://github.com/kingdomseed/searchlight_parsedoc.git
+      ref: main
+  flutter_html: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

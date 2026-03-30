@@ -10,20 +10,17 @@ Searchlight Highlight is a pure Dart reimplementation of Orama's standalone
 highlight package shape for Searchlight, the independent Dart reimplementation
 of Orama's in-memory search and indexing model.
 
-Package links:
+Companion core package:
 
-- `searchlight` on pub.dev: <https://pub.dev/packages/searchlight>
-- `searchlight` on GitHub: <https://github.com/kingdomseed/searchlight>
-- `searchlight_highlight` on pub.dev:
-  <https://pub.dev/packages/searchlight_highlight>
-- `searchlight_highlight` on GitHub:
-  <https://github.com/kingdomseed/searchlight_highlight>
+- [`searchlight`](https://pub.dev/packages/searchlight) provides indexing,
+  querying, and persistence for the content you highlight here.
 
 It exposes the same core helper surface audited from Orama Highlight:
 
 - `Highlight`
 - `highlightStrategy`
 - `HighlightOptions`
+- `HighlightStrategy`
 - `Position`
 
 ## Status
@@ -44,6 +41,7 @@ Important package-shape note:
 - Orama Highlight is a standalone helper package, not a create-time plugin
 - `searchlight_highlight` matches that package shape directly
 - it does not require the Searchlight extension system
+- it is the canonical highlight package for the Searchlight ecosystem
 
 ## Platform Support
 
@@ -127,27 +125,150 @@ void main() {
 }
 ```
 
-## Relationship To `searchlight`
+## Relationship To Searchlight Packages
 
-The core `searchlight` package already includes built-in highlighting helpers
-for Searchlight search flows.
+Choose dependencies based on the job:
 
-`searchlight_highlight` exists for a different purpose:
+- only text highlighting: install `searchlight_highlight`
+- Searchlight search plus post-search excerpts/highlights: install
+  `searchlight` and `searchlight_highlight`
+- Markdown or HTML extraction plus Searchlight search plus highlights: install
+  `searchlight_parsedoc`, `searchlight`, and `searchlight_highlight`
+
+`searchlight_highlight` owns:
 
 - strict parity with the audited Orama standalone package API
+- inclusive `Position` offsets
 - HTML-markup output via `HTML`
 - Orama-style stateful trimming semantics
-- use outside of a Searchlight database when you just need text highlighting
+
+`searchlight` owns:
+
+- index creation
+- document storage
+- query execution
+- persistence
+
+`searchlight_parsedoc` owns:
+
+- Markdown and HTML extraction into Searchlight-ready records
+- folder-based document ingestion helpers for supported VM targets
+
+This package does not own:
+
+- index creation
+- document parsing
+- Flutter widgets
+
+Flutter apps typically use `Position` ranges to build `TextSpan` trees or
+highlighted preview widgets.
+
+`HTML` safety note:
+
+- `HTML` is a convenience string built from the original source text plus the
+  configured wrapper tag
+- it does not escape or sanitize the underlying text for you
+- if you render that output in an HTML context, sanitize according to your app
+  requirements
+
+Important offset rule:
+
+- `Position.end` is inclusive
+- Flutter substring logic should therefore use `end + 1`
+
+## Flutter Rendering Pattern
+
+`searchlight_highlight` stays pure Dart, but Flutter rendering is
+straightforward because the package returns plain strings plus `Position`
+ranges.
+
+For highlighted inline text, build `TextSpan` ranges from `positions`:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:searchlight_highlight/searchlight_highlight.dart';
+
+List<InlineSpan> buildHighlightSpans(
+  BuildContext context,
+  String text,
+  List<Position> positions,
+) {
+  if (positions.isEmpty) {
+    return [TextSpan(text: text)];
+  }
+
+  final spans = <InlineSpan>[];
+  var cursor = 0;
+
+  for (final position in positions) {
+    final start = position.start;
+    final endExclusive = position.end + 1;
+
+    if (start > cursor) {
+      spans.add(TextSpan(text: text.substring(cursor, start)));
+    }
+
+    spans.add(
+      TextSpan(
+        text: text.substring(start, endExclusive),
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+    cursor = endExclusive;
+  }
+
+  if (cursor < text.length) {
+    spans.add(TextSpan(text: text.substring(cursor)));
+  }
+
+  return spans;
+}
+```
+
+For body/source rendering, keep responsibilities separate:
+
+- use `searchlight_highlight` for the match positions or HTML output
+- use `flutter_markdown_plus` when you want rendered Markdown source bodies
+
+```dart
+MarkdownBody(data: record.displayBody);
+```
+
+The Flutter validation app under [`example/`](example/) shows both patterns in
+one place.
 
 ## Example
 
-The repository includes a small console example under [`example/`](example/).
+The repository includes:
+
+- a console sample under [`example/searchlight_highlight_example.dart`](example/searchlight_highlight_example.dart)
+- a Flutter validation app under [`example/`](example/)
+
+The Flutter app proves two paths:
+
+- standalone `searchlight_highlight` usage
+- `searchlight_parsedoc` + `searchlight` + `searchlight_highlight` working
+  together over live `.md` and `.html` folders
 
 Run it with:
 
 ```bash
 dart run example/searchlight_highlight_example.dart
 ```
+
+For the Flutter app:
+
+```bash
+cd example
+flutter pub get
+flutter run -d macos
+```
+
+Inside the app:
+
+- use `Standalone highlight` to inspect `positions`, `HTML`, and `trim()`
+- use `Parsedoc + highlight` to choose a local folder and verify parsed
+  Markdown or HTML records are searchable and highlight correctly
 
 ## Additional Information
 
