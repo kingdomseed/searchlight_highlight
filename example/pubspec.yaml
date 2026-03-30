@@ -12,10 +12,10 @@ dependencies:
   file_selector: ^1.0.3
   flutter_markdown_plus: ^1.0.3
   path: ^1.9.1
-  searchlight: ^0.2.0
+  searchlight: ^0.2.1
   searchlight_highlight:
     path: ..
-  searchlight_parsedoc: ^0.2.0
+  searchlight_parsedoc: ^0.2.1
   flutter_html: ^3.0.0
 
 dev_dependencies:
