@@ -1,6 +1,6 @@
 name: searchlight_highlight
 description: A pure Dart reimplementation of Orama's standalone highlight package.
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/kingdomseed/searchlight_highlight
 repository: https://github.com/kingdomseed/searchlight_highlight
 issue_tracker: https://github.com/kingdomseed/searchlight_highlight/issues

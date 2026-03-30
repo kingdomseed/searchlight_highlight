@@ -254,8 +254,6 @@ The Flutter app proves two paths:
 
 Current example-app constraints:
 
-- the parsedoc integration uses `searchlight_parsedoc` from GitHub `main`
-  rather than a pinned pub release
 - the live folder-ingestion flow is desktop-only in the current app
 - the example app overrides the HTML class to `searchlight-highlight`; the
   package default remains `orama-highlight`
