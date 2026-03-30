@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-03-30
+
+### Changed
+
+- Removed a final round of extraneous package-relationship wording from the
+  docs.
+- Updated the example app dependency alignment to `searchlight` and
+  `searchlight_parsedoc` `^0.2.2`.
+
 ## [0.2.1] - 2026-03-30
 
 ### Added
