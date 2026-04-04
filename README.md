@@ -6,16 +6,15 @@
 [![Repository](https://img.shields.io/badge/repository-kingdomseed%2Fsearchlight__highlight-24292f)](https://github.com/kingdomseed/searchlight_highlight)
 [![Publisher](https://img.shields.io/badge/publisher-jasonholtdigital.com-2b7cff)](https://pub.dev/publishers/jasonholtdigital.com)
 
-Searchlight Highlight is a pure Dart reimplementation of Orama's standalone
-highlight package shape for Searchlight, the independent Dart reimplementation
-of Orama's in-memory search and indexing model.
+Searchlight Highlight is a pure Dart highlighting package for the Searchlight
+ecosystem.
 
 Companion core package:
 
 - [`searchlight`](https://pub.dev/packages/searchlight) provides indexing,
   querying, and persistence for the content you highlight here.
 
-It exposes the same core helper surface audited from Orama Highlight:
+It exposes this focused helper surface:
 
 - `Highlight`
 - `highlightStrategy`
@@ -25,7 +24,7 @@ It exposes the same core helper surface audited from Orama Highlight:
 
 ## Status
 
-`searchlight_highlight` matches the audited Orama Highlight source contract:
+`searchlight_highlight` currently provides:
 
 - stateful `Highlight` class
 - `highlight(text, searchTerm)` returns `this`
@@ -38,8 +37,8 @@ It exposes the same core helper surface audited from Orama Highlight:
 
 Important package-shape note:
 
-- Orama Highlight is a standalone helper package, not a create-time plugin
-- `searchlight_highlight` matches that package shape directly
+- `searchlight_highlight` is a standalone helper package, not a create-time
+  plugin
 - it does not require the Searchlight extension system
 - it is the canonical highlight package for the Searchlight ecosystem
 
@@ -88,7 +87,7 @@ The quick <mark class="orama-highlight">brown</mark> <mark class="orama-highligh
 
 ## Configuration
 
-`HighlightOptions` mirrors the audited Orama source:
+`HighlightOptions` supports:
 
 ```dart
 final highlighter = Highlight(
@@ -139,10 +138,10 @@ Choose dependencies based on the job:
 
 `searchlight_highlight` owns:
 
-- strict parity with the audited Orama standalone package API
+- a narrow standalone highlight helper contract
 - inclusive `Position` offsets
 - HTML-markup output via `HTML`
-- Orama-style stateful trimming semantics
+- stateful trimming semantics
 
 `searchlight` owns:
 
@@ -280,7 +279,13 @@ Inside the app:
 
 ## Additional Information
 
-This package intentionally keeps the audited Orama package boundary narrow.
+This package intentionally keeps the helper boundary narrow.
 Potential follow-up helpers such as Flutter `TextSpan` adapters or richer
-snippet builders should only be added after strict parity is complete and
-explicitly documented as additive behavior.
+snippet builders should only be added after the current helper contract is
+stable and explicitly documented as additive behavior.
+
+## License And Attribution
+
+Searchlight Highlight is an independent pure Dart package for the Searchlight
+ecosystem. It credits Orama Highlight for inspiration and package-shape audit
+work, but it is not affiliated with or endorsed by the Orama project.
