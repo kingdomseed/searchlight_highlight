@@ -1,6 +1,6 @@
 name: searchlight_highlight
 description: Highlighting helpers for the Searchlight package ecosystem.
-version: 0.2.2
+version: 0.2.3
 homepage: https://github.com/kingdomseed/searchlight_highlight
 repository: https://github.com/kingdomseed/searchlight_highlight
 issue_tracker: https://github.com/kingdomseed/searchlight_highlight/issues

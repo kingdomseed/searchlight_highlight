@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-04-04
+
+### Changed
+
+- Reduced repeated Orama emphasis in the publish-facing docs and package
+  metadata while keeping clear attribution.
+
 ## [0.2.2] - 2026-03-30
 
 ### Changed
